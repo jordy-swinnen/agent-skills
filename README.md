@@ -3,24 +3,30 @@
 Paste this into any coding agent to install all skills from this repository:
 
 ```text
-Install Jordy's shared agent skills from https://github.com/jordy-swinnen/agent-skills with OpenPackage.
+Install Jordy's shared agent skills from https://github.com/jordy-swinnen/agent-skills with APM (Agent Package Manager).
 
-1. Install the CLI if it is missing: npm install -g opkg
-2. From the repository root, run these three commands:
-   opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude
-   opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude
-   opkg install gh@jordy-swinnen/agent-skills/skills/opencode-go-plus-build-plan-recommender --platforms claude
-3. Always pass --platforms claude: both Claude Code and OpenCode discover .claude/skills/ natively, and this repository does not create .opencode/skills/.
+1. Install the CLI if it is missing: brew install apm
+2. From the repository root, run:
+   apm install jordy-swinnen/agent-skills#v0.1.0
+3. Make sure the consuming repository's apm.yml pins `targets: [claude]`. That is the only target that deploys skills
+   to .claude/skills/, which both Claude Code and OpenCode read; any other target adds a second copy under
+   .agents/skills/. Never run apm compile for this package.
 4. Verify: python3 .claude/skills/dual-agent-config/scripts/check_config.py
 ```
 
-Those commands add three portable skills to `.claude/skills/` and record each dependency in `.openpackage/` so updates can be pulled later. Installing a skill subpath avoids this package's root `AGENTS.md`, so a consumer's rulebook is never overwritten.
+`apm install` adds the dependency to `apm.yml`, writes `apm.lock.yaml` with the pinned commit and content hashes, and
+deploys the three skills to `.claude/skills/`. It does not touch the consuming repository's `AGENTS.md`, `CLAUDE.md`
+or its own skills.
 
 ## What this repository is
 
-`agent-skills` is an [OpenPackage](https://openpackage.dev) package of skills that are useful in any repository. It is deliberately project-agnostic: no product paths, build commands, ticket prefixes, domains or model defaults that only make sense in one codebase. Skills read those facts from the repository they are installed into, usually from `AGENTS.md`, or fetch live sources at runtime.
+`agent-skills` is an [APM](https://microsoft.github.io/apm/) package of skills that are useful in any repository. It is
+deliberately project-agnostic: no product paths, build commands, ticket prefixes, domains or model defaults that only
+make sense in one codebase. Skills read those facts from the repository they are installed into, usually from
+`AGENTS.md`, or fetch live sources at runtime.
 
-The package installs through [OpenPackage](https://github.com/enulus/OpenPackage), a universal package manager for coding-agent rules, commands, agents and skills. OpenPackage converts one package for many tools. This package intentionally targets the `claude` platform because both Claude Code and OpenCode load `.claude/skills/`; that keeps a single copy and avoids duplicate `.opencode/skills/`.
+The package declares `targets: [claude]` because both Claude Code and OpenCode load `.claude/skills/`. Every other APM
+target converges on `.agents/skills/`, which would leave two copies of each skill competing for the same name.
 
 ## Included skills
 
@@ -32,31 +38,38 @@ The package installs through [OpenPackage](https://github.com/enulus/OpenPackage
 
 ## Install part of the package
 
-Install one skill:
+Install only some skills:
 
 ```bash
-opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude
+apm install jordy-swinnen/agent-skills#v0.1.0 --skill agent-handoff --skill dual-agent-config
 ```
 
 Install into the user-level directory instead of one repository:
 
 ```bash
-opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude --global
+apm install -g jordy-swinnen/agent-skills#v0.1.0
 ```
 
 OpenCode also reads global `~/.claude/skills/`, so the global form serves both tools.
 
 ## Update
 
-From the consuming repository, rerun the three subpath installs with `--platforms claude --force`:
-
 ```bash
-opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude --force
-opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude --force
-opkg install gh@jordy-swinnen/agent-skills/skills/opencode-go-plus-build-plan-recommender --platforms claude --force
+apm update        # re-resolve the pinned ref and redeploy
+apm outdated      # see what moved upstream, without writing
 ```
 
-OpenPackage records what it installed in `.openpackage/openpackage.yml` and `.openpackage/openpackage.index.yml`. Do not run bare `opkg install` in a repo that also has `.opencode/`: without `--platforms claude` it redetects platforms and writes duplicate `.opencode/skills/` copies, which both Claude Code and OpenCode already get from `.claude/skills/`.
+`apm update` rewrites `apm.lock.yaml`; commit it with the redeployed files. A CI run installs the locked state instead:
+
+```bash
+apm install --frozen
+```
+
+`apm update` is safe here because `apm.yml` declares `targets: [claude]`, which outranks filesystem auto-detection — a
+repository that also has `.opencode/` still gets no `.opencode/skills/` and no `.agents/skills/`.
+
+Keep `apm_modules/` out of git (it is the installed copy, like `node_modules/`); the deployed `.claude/skills/` files
+are committed so clones and non-APM environments still work.
 
 ## Add a skill
 
@@ -71,7 +84,8 @@ OpenPackage records what it installed in `.openpackage/openpackage.yml` and `.op
    python3 skills/dual-agent-config/scripts/test_sync_mcp.py
    ```
 
-6. Commit and push. Consumers pull the change with `opkg install`.
+6. Bump `version:` in `apm.yml`, commit, push, and tag (`git tag v0.1.1 && git push origin main --tags`). Consumers
+   pull the change with `apm update`.
 
 ## Requirements
 
