@@ -1,0 +1,6 @@
+name: agent-skills
+version: 0.1.0
+description: Project-agnostic skills for Claude Code and OpenCode, packaged with OpenPackage
+keywords: [skills, opencode, claude-code, openpackage, benchlm, handoff, mcp]
+author: jordy-swinnen
+license: MIT
