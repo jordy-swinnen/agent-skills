@@ -34,6 +34,7 @@ agent-skills/
 ├── LICENSE
 └── skills/
     ├── agent-handoff/
+    ├── autonomous-work/
     ├── dual-agent-config/
     └── opencode-go-plus-build-plan-recommender/
 ```

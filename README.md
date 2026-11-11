@@ -15,7 +15,7 @@ Install Jordy's shared agent skills from https://github.com/jordy-swinnen/agent-
 ```
 
 `apm install` adds the dependency to `apm.yml`, writes `apm.lock.yaml` with the pinned commit and content hashes, and
-deploys the three skills to `.claude/skills/`. It does not touch the consuming repository's `AGENTS.md`, `CLAUDE.md`
+deploys the four skills to `.claude/skills/`. It does not touch the consuming repository's `AGENTS.md`, `CLAUDE.md`
 or its own skills.
 
 ## What this repository is
@@ -34,6 +34,7 @@ target converges on `.agents/skills/`, which would leave two copies of each skil
 |---|---|
 | [`dual-agent-config`](skills/dual-agent-config/SKILL.md) | Keeps Claude Code and OpenCode 2 (CLI and desktop app) on one rulebook: `AGENTS.md` plus a `CLAUDE.md` import shim, shared skills, deliberate per-tool subagents/commands/MCP, and a file-level checker. Includes `sync_mcp.py` (OAuth-aware) and `check_config.py`. |
 | [`agent-handoff`](skills/agent-handoff/SKILL.md) | Hands work between agent harnesses in either direction. The outgoing agent verifies checks, commits safe work, writes a handover document and a paste-ready prompt, and recommends the next model against a budget with BenchLM. The incoming agent takes over from that file. |
+| [`autonomous-work`](skills/autonomous-work/SKILL.md) | Keeps the agent working while the user is away: it settles what it can alone, takes reversible defaults and records them, parks blocking questions instead of stopping, never widens what the user approved, and ends with one phone-sized report of results, assumptions and numbered questions. |
 | [`opencode-go-plus-build-plan-recommender`](skills/opencode-go-plus-build-plan-recommender/SKILL.md) | Fetches the live OpenCode Go pricing page and current BenchLM rankings, then recommends Build and Plan models and prints cost/allowance tables for Go, Go Plus or Go Teams. No hardcoded prices or scores. |
 
 ## Install part of the package
@@ -91,6 +92,7 @@ are committed so clones and non-APM environments still work.
 
 - For `dual-agent-config`: Python 3 standard library, plus Python for the MCP tests.
 - For `agent-handoff`: git and a POSIX shell. Model advice uses the BenchLM MCP server or its REST API.
+- For `autonomous-work`: nothing beyond the harness. It uses the repository's own checks and, when the harness has one, a notification tool.
 - For `opencode-go-plus-build-plan-recommender`: network access to `https://opencode.ai/docs/console/go/` and the BenchLM MCP server.
 
 ## License
