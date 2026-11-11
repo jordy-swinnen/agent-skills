@@ -32,7 +32,7 @@ target converges on `.agents/skills/`, which would leave two copies of each skil
 
 | Skill | What it does |
 |---|---|
-| [`dual-agent-config`](skills/dual-agent-config/SKILL.md) | Keeps Claude Code and OpenCode on one rulebook: `AGENTS.md` plus a `CLAUDE.md` import shim, shared skills, deliberate per-tool subagents/commands/MCP, and a file-level checker. Includes `sync_mcp.py` (OAuth-aware) and `check_config.py`. |
+| [`dual-agent-config`](skills/dual-agent-config/SKILL.md) | Keeps Claude Code and OpenCode 2 (CLI and desktop app) on one rulebook: `AGENTS.md` plus a `CLAUDE.md` import shim, shared skills, deliberate per-tool subagents/commands/MCP, and a file-level checker. Includes `sync_mcp.py` (OAuth-aware) and `check_config.py`. |
 | [`agent-handoff`](skills/agent-handoff/SKILL.md) | Hands work between agent harnesses in either direction. The outgoing agent verifies checks, commits safe work, writes a handover document and a paste-ready prompt, and recommends the next model against a budget with BenchLM. The incoming agent takes over from that file. |
 | [`opencode-go-plus-build-plan-recommender`](skills/opencode-go-plus-build-plan-recommender/SKILL.md) | Fetches the live OpenCode Go pricing page and current BenchLM rankings, then recommends Build and Plan models and prints cost/allowance tables for Go, Go Plus or Go Teams. No hardcoded prices or scores. |
 

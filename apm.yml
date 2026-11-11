@@ -2,7 +2,7 @@
 # `targets: [claude]` is deliberate: `claude` is the only target that deploys skills to .claude/skills/, which both
 # Claude Code and OpenCode read. Adding another target would deploy a second copy under .agents/skills/.
 name: agent-skills
-version: "0.1.0"
+version: "0.2.0"
 description: Project-agnostic skills for Claude Code and OpenCode
 author: jordy-swinnen
 license: MIT
