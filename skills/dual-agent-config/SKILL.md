@@ -144,6 +144,14 @@ If the user pushes to unify anyway, explain the reasoning rather than declining 
 
 ## Task: audit an existing setup
 
+Run the bundled checker first:
+
+```bash
+python3 .claude/skills/dual-agent-config/scripts/check_config.py
+```
+
+Add `--strict-portable` when every skill in the repository should package for claude.ai and OpenCode too. The checker verifies one rulebook, skill names and references, scoped-rule keys and MCP parity. If a harness-specific skill fails only the portable check, leave it strict-off and fix the other failures.
+
 When someone reports "one agent isn't following my rules," walk this in order and stop at the first hit:
 
 1. Does `AGENTS.md` exist without a `CLAUDE.md` importing it? → Claude Code is blind.
