@@ -48,13 +48,15 @@ OpenCode also reads global `~/.claude/skills/`, so the global form serves both t
 
 ## Update
 
-From the consuming repository:
+From the consuming repository, rerun the three subpath installs with `--platforms claude --force`:
 
 ```bash
-opkg install
+opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude --force
+opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude --force
+opkg install gh@jordy-swinnen/agent-skills/skills/opencode-go-plus-build-plan-recommender --platforms claude --force
 ```
 
-Or install the package again with the same `--skills` list. OpenPackage records what it installed in `.openpackage/openpackage.yml` and `.openpackage/openpackage.index.yml`.
+OpenPackage records what it installed in `.openpackage/openpackage.yml` and `.openpackage/openpackage.index.yml`. Do not run bare `opkg install` in a repo that also has `.opencode/`: without `--platforms claude` it redetects platforms and writes duplicate `.opencode/skills/` copies, which both Claude Code and OpenCode already get from `.claude/skills/`.
 
 ## Add a skill
 

@@ -36,7 +36,7 @@ agent-skills/
     └── opencode-go-plus-build-plan-recommender/
 ```
 
-Do not add a root `root/` directory or other files that OpenPackage would install into a consumer. Consumers install a skill subpath such as `gh@jordy-swinnen/agent-skills/skills/agent-handoff`, which keeps this package's `AGENTS.md` in this repository and never overwrites a consumer's rulebook.
+Do not add a root `root/` directory or other files that OpenPackage would install into a consumer. Consumers install a skill subpath such as `gh@jordy-swinnen/agent-skills/skills/agent-handoff`, which keeps this package's `AGENTS.md` in this repository and never overwrites a consumer's rulebook. Never run bare `opkg install` in a dual-agent repo: it redetects platforms and creates duplicate `.opencode/skills/`. Reinstall each subpath with `--platforms claude --force`.
 
 ## Changes
 
