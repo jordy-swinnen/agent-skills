@@ -36,7 +36,7 @@ agent-skills/
     └── opencode-go-plus-build-plan-recommender/
 ```
 
-Do not add a root `root/` directory or other files that OpenPackage would install into a consumer. Consumers install with `--skills` so this package's `AGENTS.md` stays in this repository and never overwrites a consumer's rulebook.
+Do not add a root `root/` directory or other files that OpenPackage would install into a consumer. Consumers install a skill subpath such as `gh@jordy-swinnen/agent-skills/skills/agent-handoff`, which keeps this package's `AGENTS.md` in this repository and never overwrites a consumer's rulebook.
 
 ## Changes
 

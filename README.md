@@ -6,13 +6,15 @@ Paste this into any coding agent to install all skills from this repository:
 Install Jordy's shared agent skills from https://github.com/jordy-swinnen/agent-skills with OpenPackage.
 
 1. Install the CLI if it is missing: npm install -g opkg
-2. From the repository root, run:
-   opkg install gh@jordy-swinnen/agent-skills --skills dual-agent-config agent-handoff opencode-go-plus-build-plan-recommender --platforms claude
-3. Keep the install scoped with --skills so this package's AGENTS.md is not merged into the project. Always pass --platforms claude: both Claude Code and OpenCode discover .claude/skills/ natively, and this repository does not create .opencode/skills/.
+2. From the repository root, run these three commands:
+   opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude
+   opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude
+   opkg install gh@jordy-swinnen/agent-skills/skills/opencode-go-plus-build-plan-recommender --platforms claude
+3. Always pass --platforms claude: both Claude Code and OpenCode discover .claude/skills/ natively, and this repository does not create .opencode/skills/.
 4. Verify: python3 .claude/skills/dual-agent-config/scripts/check_config.py
 ```
 
-That one command adds three portable skills to `.claude/skills/` and records the dependency in `.openpackage/` so updates can be pulled later.
+Those commands add three portable skills to `.claude/skills/` and record each dependency in `.openpackage/` so updates can be pulled later. Installing a skill subpath avoids this package's root `AGENTS.md`, so a consumer's rulebook is never overwritten.
 
 ## What this repository is
 
@@ -33,13 +35,13 @@ The package installs through [OpenPackage](https://github.com/enulus/OpenPackage
 Install one skill:
 
 ```bash
-opkg install gh@jordy-swinnen/agent-skills --skills agent-handoff --platforms claude
+opkg install gh@jordy-swinnen/agent-skills/skills/agent-handoff --platforms claude
 ```
 
 Install into the user-level directory instead of one repository:
 
 ```bash
-opkg install gh@jordy-swinnen/agent-skills --skills dual-agent-config agent-handoff opencode-go-plus-build-plan-recommender --platforms claude --global
+opkg install gh@jordy-swinnen/agent-skills/skills/dual-agent-config --platforms claude --global
 ```
 
 OpenCode also reads global `~/.claude/skills/`, so the global form serves both tools.
