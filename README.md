@@ -7,7 +7,7 @@ Install Jordy's shared agent skills from https://github.com/jordy-swinnen/agent-
 
 1. Install the CLI if it is missing: brew install apm
 2. From the repository root, run:
-   apm install jordy-swinnen/agent-skills#v0.1.0
+   apm install jordy-swinnen/agent-skills#v0.3.0
 3. Make sure the consuming repository's apm.yml pins `targets: [claude]`. That is the only target that deploys skills
    to .claude/skills/, which both Claude Code and OpenCode read; any other target adds a second copy under
    .agents/skills/. Never run apm compile for this package.
@@ -42,13 +42,13 @@ target converges on `.agents/skills/`, which would leave two copies of each skil
 Install only some skills:
 
 ```bash
-apm install jordy-swinnen/agent-skills#v0.1.0 --skill agent-handoff --skill dual-agent-config
+apm install jordy-swinnen/agent-skills#v0.3.0 --skill agent-handoff --skill dual-agent-config
 ```
 
 Install into the user-level directory instead of one repository:
 
 ```bash
-apm install -g jordy-swinnen/agent-skills#v0.1.0
+apm install -g jordy-swinnen/agent-skills#v0.3.0
 ```
 
 OpenCode also reads global `~/.claude/skills/`, so the global form serves both tools.
